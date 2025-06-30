@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">QuikStream</string>
+    <string name="quik_label">Quik</string>
+    <string name="retry_label">Retry</string>
+    <string name="fetch_stream_label">Fetch Stream</string>
+    <string name="play_stream_label">Play Stream</string>
+    <string name="stream_url_label">Stream URL</string>
+    <string name="idle_message">Tap “Fetch Stream” to get started</string>
+</resources>
