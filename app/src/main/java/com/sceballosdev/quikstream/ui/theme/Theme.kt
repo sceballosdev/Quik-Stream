@@ -11,7 +11,7 @@ private val LightColors = lightColorScheme(
     primary = QuikBlue,
     onPrimary = Color.White,
     primaryContainer = QuikLightBlue.copy(alpha = 0.20f),
-    onPrimaryContainer = QuikBlue,
+    onPrimaryContainer = Color.Black,
 
     secondary = QuikLightBlue,
     onSecondary = Color.White,
@@ -33,7 +33,7 @@ private val DarkColors = darkColorScheme(
     primary = QuikLightBlue,
     onPrimary = Color.Black,
     primaryContainer = QuikLightBlue.copy(alpha = 0.20f),
-    onPrimaryContainer = QuikLightBlue,
+    onPrimaryContainer = Color.White,
 
     secondary = QuikDarkBlue,
     onSecondary = Color.Black,

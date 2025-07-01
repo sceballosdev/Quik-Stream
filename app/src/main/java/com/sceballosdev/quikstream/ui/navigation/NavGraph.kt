@@ -1,6 +1,11 @@
 package com.sceballosdev.quikstream.ui.navigation
 
 import android.net.Uri
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -22,7 +27,11 @@ fun QuikStreamNavHost() {
 
     NavHost(
         navController = navController,
-        startDestination = Main
+        startDestination = Main,
+        enterTransition = { fadeIn(animationSpec = tween(durationMillis = 150)) },
+        exitTransition = { fadeOut(animationSpec = tween(durationMillis = 100)) },
+        popEnterTransition = { fadeIn(animationSpec = tween(durationMillis = 150)) },
+        popExitTransition = { fadeOut(animationSpec = tween(durationMillis = 100)) }
     ) {
         composable(route = Main) {
             MainScreen(
@@ -43,7 +52,31 @@ fun QuikStreamNavHost() {
                 navArgument(name = NAME_KEY) { type = NavType.StringType },
                 navArgument(name = AUTHOR_KEY) { type = NavType.StringType },
                 navArgument(name = URL_KEY) { type = NavType.StringType }
-            )
+            ),
+            enterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeIn(animationSpec = tween(durationMillis = 150))
+            },
+            exitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> -fullWidth / 3 },
+                    animationSpec = tween(durationMillis = 250)
+                ) + fadeOut(animationSpec = tween(durationMillis = 100))
+            },
+            popEnterTransition = {
+                slideInHorizontally(
+                    initialOffsetX = { fullWidth -> -fullWidth },
+                    animationSpec = tween(durationMillis = 300)
+                ) + fadeIn(animationSpec = tween(durationMillis = 150))
+            },
+            popExitTransition = {
+                slideOutHorizontally(
+                    targetOffsetX = { fullWidth -> fullWidth },
+                    animationSpec = tween(durationMillis = 250)
+                ) + fadeOut(animationSpec = tween(durationMillis = 100))
+            }
         ) {
             PlaybackScreen(
                 onBack = { navController.popBackStack() }

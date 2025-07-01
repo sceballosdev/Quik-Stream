@@ -14,26 +14,16 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
 /**
- * 	3.	State lifting
- * 	•	Mantén el Player y su PlayerView en un ViewModel (PlaybackViewModel) si necesitas sobrevivir a recreaciones de configuración o persistir posición.
+ * ViewModel responsible for providing the [Stream] data and managing the [ExoPlayer] instance
+ * for playback. Stream metadata is retrieved from the [SavedStateHandle] arguments.
  *
- *
- * Fase 3: Robustez & Manejo de Errores
- *
- * Objetivo: Cubrir casos como timeout, sin Internet, errores JSON o URL inválida.
- * 	1.	Interceptor de red
- * 	•	Agrega un interceptor en OkHttp para simular fallos o medir latencia.
- * 	2.	Error States en UI
- * 	•	En MainUiState.Error, muestra un diálogo o un Snackbar informativo con “Revisar conexión” y un icono.
- * 	3.	Retry / Offline Cache
- * 	•	Implementa un simple cache en memoria (o en DataStore/Room si quieres un extra) para mantener la última lista de streams.
- * 	•	En absence de red, muestra esa caché con un “Cached data” banner.
+ * @param context Application context used to build the ExoPlayer.
+ * @param savedStateHandle Handle containing navigation arguments for name, author, and URL.
  */
-
 @HiltViewModel
 class PlaybackViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val name = savedStateHandle.get<String>(NAME_KEY) ?: error("name missing")
@@ -41,12 +31,19 @@ class PlaybackViewModel @Inject constructor(
     private val url = savedStateHandle.get<String>(URL_KEY) ?: error("url missing")
     val stream = Stream(name = name, author = author, url = url)
 
+    /**
+     * ExoPlayer instance configured to play the stream URL.
+     * Prepared and set to play when ready.
+     */
     val player: ExoPlayer = ExoPlayer.Builder(context).build().apply {
         setMediaItem(MediaItem.fromUri(stream.url))
         prepare()
         playWhenReady = true
     }
 
+    /**
+     * Releases the ExoPlayer when the ViewModel is cleared to free resources.
+     */
     override fun onCleared() {
         super.onCleared()
         player.release()

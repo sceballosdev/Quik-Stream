@@ -10,7 +10,7 @@ val QuikStreamTypography = Typography(
     displayLarge = TextStyle(
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.ExtraBold,
-        fontSize = 56.sp,
+        fontSize = 48.sp,
         lineHeight = 64.sp,
         letterSpacing = 0.sp
     ),

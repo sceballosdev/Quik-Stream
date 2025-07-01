@@ -25,7 +25,10 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -52,21 +55,27 @@ dependencies {
     implementation(libs.material.icons.extended)
     implementation(libs.ui.text.google.fonts)
 
-    // Networking
+    // Networking Retrofit + Kotlin Serialization
     implementation(libs.retrofit)
     implementation(libs.converter.kotlinx.serialization)
     implementation(libs.kotlinx.serialization.json)
 
-    // Dependency Injection
+    // Dependency Injection Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    // Navigation
+    // Navigation compose + Hilt
+    implementation(libs.navigation.compose)
     implementation(libs.hilt.navigation.compose)
 
-    // Media 3
+    // Media 3 + ExoPlayer
     implementation(libs.media3.exoplayer)
     implementation(libs.media3.ui)
+
+    // Testing
+    testImplementation(libs.mockk)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

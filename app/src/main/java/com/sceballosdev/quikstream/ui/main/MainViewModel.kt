@@ -16,6 +16,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel that manages UI state for QuikStream's main screen.
+ *
+ * Utilizes [GetStreamsUseCase] to load video streams and exposes [uiState]
+ * as a [StateFlow] of [MainUiState], allowing the UI to observe and react
+ * to loading, success, and error states.
+ *
+ * @property getStreamsUseCase Use case providing the stream-fetching logic.
+ */
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val getStreamsUseCase: GetStreamsUseCase
@@ -24,6 +33,15 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<MainUiState>(value = Idle)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
+    /**
+     * Starts the stream-fetch process.
+     *
+     * Launches a coroutine in [viewModelScope] to collect results from
+     * [GetStreamsUseCase], updating [_uiState] accordingly:
+     *  - [MainUiState.Loading] when starting the request.
+     *  - [MainUiState.Success] with a list of [Stream] on success.
+     *  - [MainUiState.Error] with an error message on failure.
+     */
     fun fetchStreams() {
         viewModelScope.launch {
             getStreamsUseCase().collect { result ->
